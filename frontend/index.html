@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storybook Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-book"></i> Storybook Adventure Chat</h1>
+            <p>Collaborative storytelling for children's illustration books</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar for Stories -->
+            <div class="sidebar">
+                <h3><i class="fas fa-book-open"></i> Available Stories</h3>
+                <div id="stories-list" class="stories-list">
+                    <!-- Stories will be loaded here -->
+                    <div class="story-item" data-id="default">
+                        <i class="fas fa-seedling"></i>
+                        <span>The Little Seed</span>
+                    </div>
+                    <div class="story-item" data-id="adventure">
+                        <i class="fas fa-dragon"></i>
+                        <span>Dragon's Adventure</span>
+                    </div>
+                </div>
+                
+                <div class="story-controls">
+                    <button id="new-story-btn" class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> New Story
+                    </button>
+                    <button id="upload-pdf-btn" class="btn btn-secondary">
+                        <i class="fas fa-file-pdf"></i> Upload PDF
+                    </button>
+                    <button id="upload-story-btn" class="btn btn-secondary">
+                        <i class="fas fa-upload"></i> Upload Story
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot">
+                        <div class="avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="content">
+                            <div class="name">StoryBot</div>
+                            <div class="text">Hello! I'm here to help you explore and expand children's stories. Which story would you like to talk about?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-container">
+                        <input type="text" id="message-input" 
+                               placeholder="Ask about the story or propose an expansion..." 
+                               autocomplete="off">
+                        <button id="send-btn" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                    <div class="input-options">
+                        <button id="propose-expansion-btn" class="btn btn-outline">
+                            <i class="fas fa-magic"></i> Propose Story Expansion
+                        </button>
+                        <button id="clear-chat-btn" class="btn btn-outline">
+                            <i class="fas fa-trash"></i> Clear Chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Logic Panel -->
+                        <i class="fas fa-check-circle"></i> Story Consistent
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expansion Proposal Modal -->
+        <div id="expansion-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-magic"></i> Propose Story Expansion</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="expansion-text">Your Expansion Idea:</label>
+                        <textarea id="expansion-text" rows="6" 
+                                  placeholder="What happens next in the story? For example: 'The little seed meets a friendly butterfly who shows it the beautiful flowers in the garden...'"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="expansion-page">Page Number:</label>
+                        <input type="number" id="expansion-page" value="17" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Referenced Elements:</label>
+                        <div id="element-checkboxes">
+                            <!-- Will be populated with story elements -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="submit-expansion-btn" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Submit for Validation
+                    </button>
+                    <button id="cancel-expansion-btn" class="btn btn-secondary">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Upload Modal -->
+        <div id="pdf-upload-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-file-pdf"></i> Upload PDF Story</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="file" id="pdf-file" accept=".pdf" style="display: none;">
+                        <button id="select-pdf-btn" class="btn btn-primary">
+                            <i class="fas fa-folder-open"></i> Select PDF File
+                        </button>
+                        <span id="selected-file-name" style="margin-left: 10px;">No file selected</span>
+                    </div>
+                    <div id="upload-progress" style="display: none; margin-top: 15px;">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 0%"></div>
+                        </div>
+                        <div id="upload-status">Uploading...</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm-upload-btn" class="btn btn-primary" disabled>
+                        <i class="fas fa-upload"></i> Upload
+                    </button>
+                    <button id="cancel-upload-btn" class="btn btn-secondary">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Adaptive Semantic Governance System | Open Source Storytelling</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

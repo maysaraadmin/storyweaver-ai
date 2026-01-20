@@ -26,8 +26,9 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler('app.log')
-    ]
+        logging.FileHandler('app.log', mode='w', encoding='utf-8')  # Use 'w' mode to overwrite the file each run
+    ],
+    force=True  # Force reconfiguration
 )
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,16 @@ app = FastAPI(
 
 # Serve static files
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+# Add middleware to disable caching for static files
+@app.middleware("http")
+async def add_no_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
 
 # Add CORS middleware
 app.add_middleware(
@@ -169,8 +180,6 @@ if not static_dir.exists():
     </body>
     </html>
     """)
-
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
